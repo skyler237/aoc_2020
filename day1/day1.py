@@ -32,10 +32,19 @@ class MyClass:
         if val == 2020:
           return (numbers[i], numbers[j])
 
+  def find_2020_product_fast(self):
+    numbers = np.array(self.input.get_lines(as_type=int))
+    for i in numbers:
+      for j in numbers:
+        for k in numbers:
+          if (i + j + k) == 2020:
+            return i*j*k
+
   def get_final_result(self):
-    num1, num2, num3 = self.find_2020_part2()
-    print(num1, num2, num3)
-    return num1*num2*num3
+    # num1, num2, num3 = self.find_2020_part2()
+    # print(num1, num2, num3)
+    # return num1*num2*num3
+    return self.find_2020_product_fast()
 
 
 

@@ -5,7 +5,7 @@ import os
 import sys
 sys.path.append('/home/skyler/aoc')
 import numpy as np
-from aoc_common.input import InputManager
+from aoc.aoc_common.input import InputManager
 
 class MyClass:
   def __init__(self, input_file):
