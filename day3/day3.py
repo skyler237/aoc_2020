@@ -35,6 +35,7 @@ class MyClass:
     c3 = self.count_trees(5)
     c4 = self.count_trees(7)
     c5 = self.count_trees(0.5)
+    print("{} {} {} {} {}".format(c1,c2,c3,c4,c5))
     return c1 * c2 * c3 * c4 * c5
 
 
