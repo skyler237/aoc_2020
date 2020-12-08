@@ -54,7 +54,6 @@ class CodeRunner:
         self.code[i] = self.code[i].replace('nop', 'jmp')
       finished, acc = self.run_code()
       if (finished):
-        print(self.execution_trail)
         return acc
     return None    
 
