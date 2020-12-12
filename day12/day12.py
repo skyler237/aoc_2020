@@ -41,9 +41,6 @@ class ShipLocation:
       self.direction = self.get_rotation(-motion_value).dot(self.direction)
 
   def move_to_wp(self, command):
-    print("pos: ", self.pos)
-    print("wp_pos: ", self.wp_pos)
-    print(command)
     motion_type = command[0]
     motion_value = int(command[1:])
     if motion_type == MotionType.NORTH:
@@ -68,7 +65,6 @@ class ShipLocation:
                      [np.sin(theta_rad), np.cos(theta_rad)]])
 
   def get_manhattan_distance(self):
-    print(self.pos)
     return np.abs(self.pos[0]) + np.abs(self.pos[1])
 
 class MyClass:
@@ -84,6 +80,8 @@ class MyClass:
     return self.ship_location.get_manhattan_distance()
 
   def get_part2_result(self):
+    # Reset ship location
+    self.ship_location = ShipLocation()
     for command in self.lines:
       self.ship_location.move_to_wp(command)
     return self.ship_location.get_manhattan_distance()
@@ -94,7 +92,7 @@ def main():
   cur_dir = os.path.dirname(os.path.realpath(__file__))
   input_file = os.path.join(cur_dir, "input.txt")
   myclass = MyClass(input_file)
-  # print(" == Part 1 Result: ==\n", myclass.get_part1_result())
+  print(" == Part 1 Result: ==\n", myclass.get_part1_result())
 
   print("\n == Part 2 Result: ==\n", myclass.get_part2_result())
 
