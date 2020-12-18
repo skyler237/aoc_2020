@@ -13,8 +13,8 @@ class CubeGrid:
 
   def initialize_grid(self, iters):
     x_size, y_size = self.initial_plane.shape
-    self.grid = np.zeros((x_size + 2*iters, y_size + 2*iters, 1 + 2*iters), dtype=np.uint8)
-    self.grid[iters:(iters+x_size), iters:(iters+y_size), iters] = self.initial_plane
+    self.grid = np.zeros((x_size + 2*iters, y_size + 2*iters, 1 + 2*iters, 1 + 2*iters), dtype=np.uint8)
+    self.grid[iters:(iters+x_size), iters:(iters+y_size), iters, iters] = self.initial_plane
 
   def simulate(self, iters):
     self.initialize_grid(iters)
@@ -24,37 +24,38 @@ class CubeGrid:
       self.print_grid()
   
   def step_grid(self):
-    x_size, y_size, z_size = self.grid.shape
+    x_size, y_size, z_size, j_size = self.grid.shape
     new_grid = self.grid.copy()
     for x in range(x_size):
       for y in range(y_size):
         for z in range(z_size):
-          new_grid[x,y,z] = self.step_cell(x,y,z)
+          for j in range(j_size):
+            new_grid[x,y,z,j] = self.step_cell(x,y,z,j)
     self.grid = new_grid
 
-  def step_cell(self, x,y,z):
-    x_size, y_size, z_size = self.grid.shape
-    nbr_cnt = self.count_neighbors(x,y,z)
-    if self.grid[x,y,z] == 1:
+  def step_cell(self, x,y,z,j):
+    nbr_cnt = self.count_neighbors(x,y,z,j)
+    if self.grid[x,y,z,j] == 1:
       return int(nbr_cnt in [2,3])
     else:
       return int(nbr_cnt == 3)
 
-  def count_neighbors(self, x,y,z):
-    x_size, y_size, z_size = self.grid.shape
+  def count_neighbors(self, x,y,z,j):
+    x_size, y_size, z_size,j_size = self.grid.shape
     rng = [-1, 0, 1]
     nbr_cnt = 0
     x_min, x_max = max(0,x-1), min(x+1, x_size-1)
     y_min, y_max = max(0,y-1), min(y+1, y_size-1)
     z_min, z_max = max(0,z-1), min(z+1, z_size-1)
-    return np.sum(self.grid[x_min:x_max+1, y_min:y_max+1, z_min:z_max+1]) - self.grid[x,y,z]
+    j_min, j_max = max(0,j-1), min(j+1, j_size-1)
+    return np.sum(self.grid[x_min:x_max+1, y_min:y_max+1, z_min:z_max+1, j_min:j_max+1]) - self.grid[x,y,z,j]
 
 
   def count_occupied(self):
     return np.sum(self.grid)
 
   def print_grid(self):    
-    x_size, y_size, z_size = self.grid.shape
+    x_size, y_size, z_size, j_size = self.grid.shape
     for layer in range(z_size):
       if np.sum(self.grid[:,:,layer]) == 0:
         continue
