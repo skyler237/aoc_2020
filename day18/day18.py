@@ -26,20 +26,24 @@ def split_expression(e):
   
 
 def eval_expression(e):
-  e = split_expression(e)
-  result = int(e[0])
-  i = 1
-  while i < len(e)-1:
-    if e[i] == '+':
-      result += int(e[i+1])
-      i += 2
-    elif e[i] == '*':
-      result *= int(e[i+1])
-      i += 2
-    else:
-      print("invalid character: ", e[i])
-      return 0
-  return result
+  groups = e.split('*')
+  result_prod = 1
+  for g in groups:
+    e = split_expression(g)
+    result = int(e[0])
+    i = 1
+    while i < len(e)-1:
+      if e[i] == '+':
+        result += int(e[i+1])
+        i += 2
+      elif e[i] == '*':
+        result *= int(e[i+1])
+        i += 2
+      else:
+        print("invalid character: ", e[i])
+        return 0
+    result_prod *= result
+  return result_prod
 
 def find_sub_expression(expr):
   left = expr.find('(')

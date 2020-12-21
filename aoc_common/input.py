@@ -8,10 +8,15 @@ class InputManager:
     except Exception as e:
       print(e)
 
-  def get_lines(self, strip_whitespace=True, as_type=None):
+  def get_lines(self, strip_whitespace=True, as_type=None, group=False):
+    if group:
+      groups = []
     lines = []
     for line in self.file:
       l = line
+      if group and l == '\n':
+        groups.append(lines)
+        lines = []
       if (strip_whitespace):
         l = l.strip()
         if len(l) == 0:
@@ -19,7 +24,11 @@ class InputManager:
       if as_type is not None:
         l = as_type(l)
       lines.append(l)
-    return lines
+    if group:
+      groups.append(lines)
+      return groups
+    else:
+      return lines
 
   
 
